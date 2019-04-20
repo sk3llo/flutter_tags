@@ -23,7 +23,7 @@ class InputTags extends StatefulWidget {
     this.labelText,
     this.height,
     this.borderRadius,
-    this.helperText,
+    this.hintText,
     this.boxShadow,
     this.placeholder,
     this.symmetry = false,
@@ -78,7 +78,7 @@ class InputTags extends StatefulWidget {
   final String labelText;
   
   /// Label text
-  final String helperText;
+  final String hintText;
 
   ///keyboard InputField
   final TextInputType keyboardType;
@@ -532,7 +532,7 @@ class _InputTagsState extends State<InputTags> {
               vertical: 7 + (widget.fontSize.clamp(10, 24).toDouble() - 14),
               horizontal: 10 + (widget.fontSize.clamp(10, 24).toDouble() - 14)),
           labelText: widget.labelText ?? null,
-          helperText: widget.helperText != null && widget.labelText == null ? widget.helperText : null,
+          hintText: widget.hintText != null && widget.labelText == null ? widget.hintText : null,
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(_initBorderRadius,),
             borderSide: BorderSide(color: widget.color ?? Color.fromRGBO(54, 209, 220, 1.0), width: 2),
