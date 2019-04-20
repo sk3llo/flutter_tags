@@ -20,6 +20,7 @@ class InputTags extends StatefulWidget {
     this.inputDecoration,
     this.maxLength,
     this.keyboardType,
+    this.labelText,
     this.height,
     this.borderRadius,
     this.boxShadow,
@@ -71,6 +72,9 @@ class InputTags extends StatefulWidget {
 
   ///max-length InputField
   final int maxLength;
+  
+  // Label text
+  final String labelText;
 
   ///keyboard InputField
   final TextInputType keyboardType;
@@ -523,7 +527,7 @@ class _InputTagsState extends State<InputTags> {
           contentPadding: EdgeInsets.symmetric(
               vertical: 7 + (widget.fontSize.clamp(10, 24).toDouble() - 14),
               horizontal: 10 + (widget.fontSize.clamp(10, 24).toDouble() - 14)),
-          labelText: 'Tags',
+          labelText: widget.labelText ?? 'Tags',
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(_initBorderRadius,),
             borderSide: BorderSide(color: widget.color ?? Color.fromRGBO(54, 209, 220, 1.0), width: 2),
