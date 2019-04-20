@@ -249,7 +249,7 @@ class _InputTagsState extends State<InputTags> {
           child: Column(
             children: _buildRows(),
           ),
-        )
+        ),
         Visibility(
         visible: !widget.textFieldHidden,
 //        child: Expanded(
