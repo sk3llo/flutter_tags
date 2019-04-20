@@ -21,6 +21,7 @@ class InputSuggestions extends StatefulWidget
         this.maxLength,
         this.inputDecoration,
         this.onSubmitted,
+        this.focusNode,
         this.onChanged,
         Key key
     }) :assert(fontSize != null), super(key: key);
@@ -32,6 +33,7 @@ class InputSuggestions extends StatefulWidget
     final List<String> suggestions;
     final bool lowerCase;
     final bool autofocus;
+    final FocusNode focusNode;
     final TextInputType keyboardType;
     final int maxLength;
     final OnSubmitted onSubmitted;
@@ -81,6 +83,7 @@ class _InputSuggestionsState extends State<InputSuggestions>
                     maxLength: widget.maxLength ?? null,
                     maxLines: 1,
                     autocorrect: widget.autocorrect ??  false,
+                    focusNode: widget.focusNode ?? null,
                     style: widget.style!=null?
                     widget.style.copyWith(
                         fontSize: widget.fontSize
