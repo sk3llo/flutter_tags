@@ -362,8 +362,6 @@ class _InputTagsState extends State<InputTags> {
   Widget _buildField({int index, double width, bool last = false}) {
     String tag = (index != null) ? _tags[index] : '';
 
-    print(width);
-
     final RenderBox overlay = Overlay
         .of(context)
         .context
