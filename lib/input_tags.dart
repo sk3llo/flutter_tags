@@ -244,7 +244,24 @@ class _InputTagsState extends State<InputTags> {
       key: _containerKey,
       margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
       color: widget.backgroundContainer ?? Colors.white,
-      child: Column(children: _buildRows(),),
+      child: Column(children:[
+        Container(
+          child: Column(
+            children: _buildRows(),
+          ),
+        )
+        Visibility(
+        visible: !widget.textFieldHidden,
+//        child: Expanded(
+//            flex: (widget.symmetry) ? 1 : width.ceil(),
+            child: Container(
+                margin: widget.margin ??
+                    EdgeInsets.symmetric(horizontal: _initMargin, vertical: 6),
+                child: _textField()
+            )
+//        ),
+      ),
+      ] ),
     );
   }
 
@@ -352,20 +369,21 @@ class _InputTagsState extends State<InputTags> {
         .context
         .findRenderObject();
 
-    Widget textField = Visibility(
-      visible: !widget.textFieldHidden,
-      child: Expanded(
-          flex: (widget.symmetry) ? 1 : width.ceil(),
-          child: Container(
-              margin: widget.margin ??
-                  EdgeInsets.symmetric(horizontal: _initMargin, vertical: 6),
-              child: _textField()
-          )
-      ),
-    );
+//    Widget textField = Visibility(
+//      visible: !widget.textFieldHidden,
+//      child: Expanded(
+//          flex: (widget.symmetry) ? 1 : width.ceil(),
+//          child: Container(
+//              margin: widget.margin ??
+//                  EdgeInsets.symmetric(horizontal: _initMargin, vertical: 6),
+//              child: _textField()
+//          )
+//      ),
+//    );
 
     if (last || tag == null)
-      return textField;
+      return Container();
+//      return textField;
     else {
       Widget container = Container(
         margin: widget.margin ??
