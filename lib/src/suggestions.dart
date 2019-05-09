@@ -107,7 +107,7 @@ class _InputSuggestionsState extends State<InputSuggestions> {
             ,
           ),
         ),
-        !_helperCheck ?
+        !_helperCheck && !_matches.isNotEmpty ?
           Positioned(right: 2.0, child: GestureDetector(child: Text(
               'no matches',
               style: widget.style ?? TextStyle(color: Colors.grey, fontSize: widget.fontSize)), onTap: widget.onSuffixTapped)) : Container()
