@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 
 typedef void OnChanged(String string);
 typedef void OnSubmitted(String string);
+typedef void OnTap();
 
-class InputSuggestions extends StatefulWidget {
-  InputSuggestions({
+class _InputSuggestions extends StatefulWidget {
+  _InputSuggestions({
     this.fontSize = 14,
     this.lowerCase = false,
     this.style,
@@ -22,6 +23,7 @@ class InputSuggestions extends StatefulWidget {
     this.onSubmitted,
     this.focusNode,
     this.onChanged,
+    this.onSuffixTapped,
     Key key
   })
       :assert(fontSize != null),
@@ -39,75 +41,78 @@ class InputSuggestions extends StatefulWidget {
   final int maxLength;
   final OnSubmitted onSubmitted;
   final OnChanged onChanged;
+  final OnTap onSuffixTapped;
 
 
   @override
   _InputSuggestionsState createState() => _InputSuggestionsState();
 }
 
-class _InputSuggestionsState extends State<InputSuggestions> {
+class _InputSuggestionsState extends State<_InputSuggestions> {
   final _controller = TextEditingController();
 
   List<String> _matches = List();
-  String _helperText = "no matches";
+  String _helperText = "";
   bool _helperCheck = true;
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: _matches.isNotEmpty ? AlignmentDirectional.topStart : AlignmentDirectional.centerStart,
       children: <Widget>[
-        Visibility(
-          visible: widget.suggestions != null,
-          child: Container(
-            padding: widget.inputDecoration != null ? widget.inputDecoration
-                .contentPadding :
-            EdgeInsets.symmetric(
-                vertical: 10 + (widget.fontSize.toDouble() / 14), horizontal: 0)
-            ,
-            child: Text(
-              _matches.isNotEmpty ? (
-                  _matches.first
-              ) : "",
-              softWrap: false,
-              overflow: TextOverflow.fade,
-              style: TextStyle(
-                fontSize: widget.fontSize ?? null,
-                color: Colors.grey[400],
-              ),
+        Container(
+          padding: widget.inputDecoration != null ? widget.inputDecoration
+              .contentPadding :
+          EdgeInsets.symmetric(
+              vertical: 10 + (widget.fontSize.toDouble() / 14), horizontal: 0)
+          ,
+          child: Text(
+            _matches.isNotEmpty ? (
+                _matches.first
+            ) : "",
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              fontSize: widget.fontSize ?? null,
+              color: Colors.grey[400],
             ),
           ),
         ),
-        TextField(
-          controller: _controller,
-          autofocus: widget.autofocus ?? true,
-          keyboardType: widget.keyboardType ?? null,
-          maxLength: widget.maxLength ?? null,
-          maxLines: 1,
-          autocorrect: widget.autocorrect ?? false,
-          focusNode: widget.focusNode ?? null,
-          style: widget.style != null ?
-          widget.style.copyWith(
-              fontSize: widget.fontSize
-          ) :
-          null,
-          decoration:
-          widget.inputDecoration != null ?
-          (
-              widget.suggestions != null ?
-              widget.inputDecoration.copyWith(
-                helperText: _helperCheck ? null : _helperText,
-              )
-                  :
-              widget.inputDecoration
-          )
-              :
-          InputDecoration(
-            helperText: _helperCheck ? null : _helperText,
+        Container(
+          child: TextField(
+            controller: _controller,
+            autofocus: widget.autofocus ?? true,
+            keyboardType: widget.keyboardType ?? null,
+            maxLength: widget.maxLength ?? null,
+            maxLines: 1,
+            autocorrect: widget.autocorrect ?? false,
+            focusNode: widget.focusNode ?? null,
+            style: widget.style != null ?
+            widget.style.copyWith(
+                fontSize: widget.fontSize
+            ) :
+            null,
+            decoration:
+            widget.inputDecoration != null ?
+            widget.suggestions != null ?
+            widget.inputDecoration.copyWith(labelText: _helperCheck ? null : _helperText)
+                :
+            widget.inputDecoration.copyWith(contentPadding: EdgeInsets.all(8))
+                : null,
+            onChanged: (str) => _checkOnChanged(str),
+            onSubmitted: (str) => _onSubmitted(str)
+            ,
           ),
-          onChanged: (str) => _checkOnChanged(str),
-          onSubmitted: (str) => _onSubmitted(str)
-          ,
-        )
+        ),
+        !_helperCheck ?
+        Positioned(right: 2.0, child: GestureDetector(child: Text(
+            'no matches',
+            style: widget.style ?? TextStyle(color: Colors.grey, fontSize: widget.fontSize)), onTap: widget.onSuffixTapped)) : Container()
       ],
     );
   }
@@ -152,25 +157,25 @@ class _InputSuggestionsState extends State<InputSuggestions> {
         _matches = suggestions.where(
                 (sgt) =>
                 sgt.toLowerCase().startsWith(str.toLowerCase())).toList();
-        }
+      }
 
-            if(str.isEmpty)
+      if (str.isEmpty)
         _matches = [];
 
-        if (_matches.length > 1)
-          _matches.removeWhere(
-                  (mtc) => mtc == str
-          );
+      if (_matches.length > 1)
+        _matches.removeWhere(
+                (mtc) => mtc == str
+        );
 
 
-        setState(() {
-          _helperCheck = _matches.isNotEmpty || str.isEmpty ? true : false;
-          _matches.sort((a, b) => a.compareTo(b));
-        });
+      setState(() {
+        _helperCheck = _matches.isNotEmpty || str.isEmpty ? true : false;
+        _matches.sort((a, b) => a.compareTo(b));
+      });
 
-        if (widget.onChanged != null)
-          widget.onChanged(str);
-      }
+      if (widget.onChanged != null)
+        widget.onChanged(str);
     }
+  }
 
 }
