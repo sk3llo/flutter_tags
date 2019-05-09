@@ -15,7 +15,7 @@ class InputSuggestions extends StatefulWidget {
     this.lowerCase = false,
     this.style,
     this.suggestions,
-    this.controller,
+    this.controller = TextEditingController(),
     this.autocorrect,
     this.autofocus,
     this.keyboardType,
@@ -51,7 +51,7 @@ class InputSuggestions extends StatefulWidget {
 }
 
 class _InputSuggestionsState extends State<InputSuggestions> {
-  final _controller;
+  TextEditingController _controller;
 
   List<String> _matches = List();
   String _helperText = "";
@@ -60,7 +60,7 @@ class _InputSuggestionsState extends State<InputSuggestions> {
 
   @override
   void initState() {
-    _controller = widget.controller ?? TextEditingController();
+    _controller = widget.controller;
     super.initState();
   }
   @override
