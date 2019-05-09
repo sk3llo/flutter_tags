@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-// InputSuggestions version 0.0.1
-// currently yield inline suggestions
-// I will soon implement a list with suggestions
-// Credit Dn-a -> https://github.com/Dn-a
-
 typedef void OnChanged(String string);
 typedef void OnSubmitted(String string);
 typedef void OnTap();
@@ -15,6 +10,7 @@ class InputSuggestions extends StatefulWidget {
     this.lowerCase = false,
     this.style,
     this.suggestions,
+    this.controller,
     this.autocorrect,
     this.autofocus,
     this.keyboardType,
@@ -30,6 +26,7 @@ class InputSuggestions extends StatefulWidget {
         super(key: key);
 
   final TextStyle style;
+  final TextEditingController controller;
   final InputDecoration inputDecoration;
   final double fontSize;
   final bool autocorrect;
@@ -49,7 +46,7 @@ class InputSuggestions extends StatefulWidget {
 }
 
 class _InputSuggestionsState extends State<InputSuggestions> {
-  TextEditingController _controller = TextEditingController();
+  var _controller;
 
   List<String> _matches = List();
   String _helperText = "";
@@ -58,6 +55,7 @@ class _InputSuggestionsState extends State<InputSuggestions> {
 
   @override
   void initState() {
+    _controller = widget.controller ?? TextEditingController();
     super.initState();
   }
   @override
@@ -110,9 +108,9 @@ class _InputSuggestionsState extends State<InputSuggestions> {
           ),
         ),
         !_helperCheck ?
-        Positioned(right: 2.0, child: GestureDetector(child: Text(
-            'no matches',
-            style: widget.style ?? TextStyle(color: Colors.grey, fontSize: widget.fontSize)), onTap: widget.onSuffixTapped)) : Container()
+          Positioned(right: 2.0, child: GestureDetector(child: Text(
+              'no matches',
+              style: widget.style ?? TextStyle(color: Colors.grey, fontSize: widget.fontSize)), onTap: widget.onSuffixTapped)) : Container()
       ],
     );
   }
