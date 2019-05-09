@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef void OnChanged(String string);
 typedef void OnSubmitted(String string);
-typedef void OnTap(String sufTextToClear);
+typedef void OnTap();
 
 class InputSuggestions extends StatefulWidget {
   InputSuggestions({
