@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef void OnChanged(String string);
 typedef void OnSubmitted(String string);
-typedef void OnTap();
+typedef void OnTap(String sufTextToClear);
 
 class InputSuggestions extends StatefulWidget {
   InputSuggestions({
@@ -46,10 +46,11 @@ class InputSuggestions extends StatefulWidget {
 }
 
 class _InputSuggestionsState extends State<InputSuggestions> {
-  var _controller;
+  TextEditingController _controller;
 
   List<String> _matches = List();
   String _helperText = "";
+  String _suffixText = "no matches";
   bool _helperCheck = true;
 
 
@@ -58,10 +59,13 @@ class _InputSuggestionsState extends State<InputSuggestions> {
     _controller = widget.controller ?? TextEditingController();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: _matches.isNotEmpty ? AlignmentDirectional.topStart : AlignmentDirectional.centerStart,
+      alignment: _matches.isNotEmpty
+          ? AlignmentDirectional.topStart
+          : AlignmentDirectional.centerStart,
       children: <Widget>[
         Container(
           padding: widget.inputDecoration != null ? widget.inputDecoration
@@ -98,7 +102,8 @@ class _InputSuggestionsState extends State<InputSuggestions> {
             decoration:
             widget.inputDecoration != null ?
             widget.suggestions != null ?
-            widget.inputDecoration.copyWith(labelText: _helperCheck ? null : _helperText)
+            widget.inputDecoration.copyWith(
+                labelText: _helperCheck ? null : _helperText)
                 :
             widget.inputDecoration.copyWith(contentPadding: EdgeInsets.all(8))
                 : null,
@@ -107,10 +112,14 @@ class _InputSuggestionsState extends State<InputSuggestions> {
             ,
           ),
         ),
-        !_helperCheck && !_matches.isNotEmpty ?
-          Positioned(right: 2.0, child: GestureDetector(child: Text(
-              'no matches',
-              style: widget.style ?? TextStyle(color: Colors.grey, fontSize: widget.fontSize)), onTap: widget.onSuffixTapped)) : Container()
+        !_helperCheck ?
+        Positioned(right: 2.0, child: GestureDetector(child: Text(
+            _suffixText,
+            style: widget.style ??
+                TextStyle(color: Colors.grey, fontSize: widget.fontSize)),
+            onTap: (){
+              widget.onSuffixTapped(_suffixText);
+            })) : Container()
       ],
     );
   }
@@ -144,6 +153,7 @@ class _InputSuggestionsState extends State<InputSuggestions> {
 
   ///Check onChanged
   void _checkOnChanged(String str) {
+    _suffixText = "no matches";
     if (widget.suggestions != null) {
       var suggestions = widget.suggestions;
       // Check if exact match and if so add it first
