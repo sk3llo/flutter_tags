@@ -118,7 +118,8 @@ class _InputSuggestionsState extends State<InputSuggestions> {
             style: widget.style ??
                 TextStyle(color: Colors.grey, fontSize: widget.fontSize)),
             onTap: (){
-              widget.onSuffixTapped(_suffixText);
+              _suffixText = '';
+              widget.onSuffixTapped();
             })) : Container()
       ],
     );
