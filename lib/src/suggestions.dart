@@ -9,8 +9,8 @@ typedef void OnChanged(String string);
 typedef void OnSubmitted(String string);
 typedef void OnTap();
 
-class _InputSuggestions extends StatefulWidget {
-  _InputSuggestions({
+class InputSuggestions extends StatefulWidget {
+  InputSuggestions({
     this.fontSize = 14,
     this.lowerCase = false,
     this.style,
@@ -48,7 +48,7 @@ class _InputSuggestions extends StatefulWidget {
   _InputSuggestionsState createState() => _InputSuggestionsState();
 }
 
-class _InputSuggestionsState extends State<_InputSuggestions> {
+class _InputSuggestionsState extends State<InputSuggestions> {
   final _controller = TextEditingController();
 
   List<String> _matches = List();
